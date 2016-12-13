@@ -53,7 +53,7 @@ module.factory('wchService', ['$http', function ($http) {
 
 	// Content Hub blueid username and password - replace these or add code to get these from inputs
 	const username = '[username]';
-	const password = '[email]';
+	const password = '[password]';
 
 	// use this to get tenant from the basicauth call, filled in during login() below
 	let baseTenantUrl = '';
