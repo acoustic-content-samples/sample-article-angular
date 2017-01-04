@@ -36,44 +36,19 @@ Download the application files (html, js, and css) from the "public" folder into
 
 #### 2. Update the user credentials
 
-This sample uses hard-coded user name and password set in the app.js file. Update the name and password values in that file.
+This sample uses a hard-coded user name and password set in the app.js file. Update the name and password values in that file.
 
 To avoid putting credentials in the source you could change the application to provide browser inputs for username and password. Also, as noted above, future Watson Content Hub releases will have support for "delivery" APIs that can be available without login.
 
 #### 3. Create all the resources needed to render the sample
 
-This application requires that you have an "Article" content type available and one or more content items using that type. Each content item will be assigned a category and the associated image will own a thumbnail rendition.
+This application uses an "Article" content type and one or more content items of that type. Each content item will be assigned a category and the associated image will have default and thumbnail renditions.
 
-##### 3a. Create an "Article" taxonomy with different categories
-
-In the WCH user interface, under Content Model -> Taxonomies, create a taxonomy named "Article" by clicking the "Create taxonomy" button. Add a few categories (eg: "Travel", "Lifestyle", "Fashion", "Tech", etc) by clicking the "Add parent category" button. Each category will be used as a link in the application's navgation.
-
-##### 3b. Create an "Article" Image profile with a "thumbnail" rendition
-
-In the WCH user interface, under Content Model -> Image profiles, create an image profile named "Article" by clicking the "Create image profile" button. Create a rendition with:
-- Label: thumbnail
-- Key: thumbnail (this should fill in automatically)
-- Width: 800
-- Height: 500
-Click the Add rendition button to complete the image profile. The thumbnail rendition will be used when rendering the site's card view.
-
-##### 3c. Create an "Article" content type
-
-In the WCH user interface, under Content Model -> Content types, create a content type named "Article" with the following elements. To set the "custom display" values, click on the little gear icon for the element.
-
-|Element name | Element type | Element custom display settings |
-| --- | --- | --- |
-|Title | Text | (none) |
-| Summary | Text | (none) |
-| Author | Text | (none) |
-| Body | Text | Multi line, Field width: 100, Field height: 10 |
-| Image | Image | Image profiles: Article |
-| Publish Date | Date (Field type "Single date") | (none) |
-| Category | Category | Select category: Article |
-
-##### 3d. Create some sample content items using the Article content type
-
-Go to Content -> My content and assets, and click the "Compose" link and select the "Article" content type. Fill in all the fields. Repeat to add various items to the different categories (to fill out the navigation).
+The sample content can be downloaded [here](https://github.com/ibm-wch/sample-article-content), and pushed into your content hub using the following command in the [developer tools](https://github.com/ibm-wch/wchtools-cli):
+```
+wchtools push -taicCrv
+```
+This will upload the sample types, assets, image profiles, content, categories and renditions.
 
 #### 4. Enable CORS support for your tenant
 
@@ -94,3 +69,36 @@ API Explorer reference documentation: https://developer.ibm.com/api/view/id-618
 Watson Content Hub developer center: https://developer.ibm.com/wch/
 
 Watson Content Hub forum: https://developer.ibm.com/answers/smartspace/wch/
+
+### Appendix
+How to create content for this sample by hand:
+1. Create an "Article" taxonomy with different categories
+
+In the WCH user interface, under Content Model -> Taxonomies, create a taxonomy named "Article" by clicking the "Create taxonomy" button. Add a few categories (eg: "Travel", "Lifestyle", "Fashion", "Tech", etc) by clicking the "Add parent category" button. Each category will be used as a link in the application's navgation.
+
+2. Create an "Article" Image profile with a "thumbnail" rendition
+
+In the WCH user interface, under Content Model -> Image profiles, create an image profile named "Article" by clicking the "Create image profile" button. Create a rendition with:
+- Label: thumbnail
+- Key: thumbnail (this should fill in automatically)
+- Width: 800
+- Height: 500
+Click the Add rendition button to complete the image profile. The thumbnail rendition will be used when rendering the site's card view.
+
+3. Create an "Article" content type
+
+In the WCH user interface, under Content Model -> Content types, create a content type named "Article" with the following elements. To set the "custom display" values, click on the little gear icon for the element.
+
+|Element name | Element type | Element custom display settings |
+| --- | --- | --- |
+|Title | Text | (none) |
+| Summary | Text | (none) |
+| Author | Text | (none) |
+| Body | Text | Multi line, Field width: 100, Field height: 10 |
+| Image | Image | Image profiles: Article |
+| Publish Date | Date (Field type "Single date") | (none) |
+| Category | Category | Select category: Article |
+
+4. Create some sample content items using the Article content type
+
+Go to Content -> My content and assets, and click the "Compose" link and select the "Article" content type. Fill in all the fields. Repeat to add various items to the different categories (to fill out the navigation).
