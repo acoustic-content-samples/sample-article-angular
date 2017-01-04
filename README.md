@@ -78,14 +78,13 @@ How to create content for this sample by hand:
 1. Create an "Article" taxonomy with different categories: In the WCH user interface, under Content Model -> Taxonomies, create a taxonomy named "Article" by clicking the "Create taxonomy" button. Add a few categories (eg: "Travel", "Lifestyle", "Fashion", "Tech", etc) by clicking the "Add parent category" button. Each category will be used as a link in the application's navgation.
 
 2. Create an "Article" Image profile with a "thumbnail" rendition: In the WCH user interface, under Content Model -> Image profiles, create an image profile named "Article" by clicking the "Create image profile" button. Create a rendition with:
-- Label: thumbnail
-- Key: thumbnail (this should fill in automatically)
-- Width: 800
-- Height: 500
+	* Label: thumbnail
+	* Key: thumbnail (this should fill in automatically)
+	* Width: 800
+	* Height: 500
 Click the Add rendition button to complete the image profile. The thumbnail rendition will be used when rendering the site's card view.
 
 3. Create an "Article" content type: In the WCH user interface, under Content Model -> Content types, create a content type named "Article" with the following elements. To set the "custom display" values, click on the little gear icon for the element.
-
 |Element name | Element type | Element custom display settings |
 | --- | --- | --- |
 |Title | Text | (none) |
