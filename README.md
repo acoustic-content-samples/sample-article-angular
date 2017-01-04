@@ -50,6 +50,8 @@ wchtools push -taicCrv
 ```
 This will upload the sample types, assets, image profiles, content, categories and renditions.
 
+If you wish to create these resources by hand, see this [appendix](#appendix).
+
 #### 4. Enable CORS support for your tenant
 
 Since this sample will run from a different domain than Watson Content Hub services, you will need to enable CORS (Cross-Origin Resource Sharing) for your tenant. You should only add domains that require access to the content and assets stored in your content hub, such as your web servers or your development environment. The domain format must be `protocol://server:port` where the protocol is either http or https, the server is either your server name or its IP address, and the port is the port number of your server. For example: `http://my.domain.org:80`. You can also use the `*` wildcard to enable CORS for any domain, though this isn't recommended from a security perspective. To control the CORS enablement for Watson Content Hub, go to Hub set up -> General settings -> Security tab. After adding your domain, be sure to click the Save button at the top right of the screen.
@@ -72,22 +74,17 @@ Watson Content Hub forum: https://developer.ibm.com/answers/smartspace/wch/
 
 ### Appendix
 How to create content for this sample by hand:
-1. Create an "Article" taxonomy with different categories
 
-In the WCH user interface, under Content Model -> Taxonomies, create a taxonomy named "Article" by clicking the "Create taxonomy" button. Add a few categories (eg: "Travel", "Lifestyle", "Fashion", "Tech", etc) by clicking the "Add parent category" button. Each category will be used as a link in the application's navgation.
+1. Create an "Article" taxonomy with different categories: In the WCH user interface, under Content Model -> Taxonomies, create a taxonomy named "Article" by clicking the "Create taxonomy" button. Add a few categories (eg: "Travel", "Lifestyle", "Fashion", "Tech", etc) by clicking the "Add parent category" button. Each category will be used as a link in the application's navgation.
 
-2. Create an "Article" Image profile with a "thumbnail" rendition
-
-In the WCH user interface, under Content Model -> Image profiles, create an image profile named "Article" by clicking the "Create image profile" button. Create a rendition with:
+2. Create an "Article" Image profile with a "thumbnail" rendition: In the WCH user interface, under Content Model -> Image profiles, create an image profile named "Article" by clicking the "Create image profile" button. Create a rendition with:
 - Label: thumbnail
 - Key: thumbnail (this should fill in automatically)
 - Width: 800
 - Height: 500
 Click the Add rendition button to complete the image profile. The thumbnail rendition will be used when rendering the site's card view.
 
-3. Create an "Article" content type
-
-In the WCH user interface, under Content Model -> Content types, create a content type named "Article" with the following elements. To set the "custom display" values, click on the little gear icon for the element.
+3. Create an "Article" content type: In the WCH user interface, under Content Model -> Content types, create a content type named "Article" with the following elements. To set the "custom display" values, click on the little gear icon for the element.
 
 |Element name | Element type | Element custom display settings |
 | --- | --- | --- |
@@ -99,6 +96,4 @@ In the WCH user interface, under Content Model -> Content types, create a conten
 | Publish Date | Date (Field type "Single date") | (none) |
 | Category | Category | Select category: Article |
 
-4. Create some sample content items using the Article content type
-
-Go to Content -> My content and assets, and click the "Compose" link and select the "Article" content type. Fill in all the fields. Repeat to add various items to the different categories (to fill out the navigation).
+4. Create some sample content items using the Article content type: Go to Content -> My content and assets, and click the "Compose" link and select the "Article" content type. Fill in all the fields. Repeat to add various items to the different categories (to fill out the navigation).
