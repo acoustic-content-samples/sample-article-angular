@@ -34,6 +34,8 @@ Note that every API service operation has specific user roles that it can be use
 
 Download the application files (html, js, and css) from the "public" folder into any folder on your workstation.
 
+If you download these web resources into a folder named sample-article-angular/assets, it will save a step in optional section #6 below.
+
 #### 2. Update the user credentials
 
 This sample uses a hard-coded user name and password set in the app.js file. Update the name and password values in that file.
@@ -63,6 +65,25 @@ You can do this right from the file system in Firefox, Chrome, or Safari browser
 If all goes well you should see an application looking something like this (depending on what you entered for text and on the images you selected):
 
 ![sample screenshot](/docs/article-sample-screenshot.jpg?raw=true "Sample screenshot")
+
+#### 6. Hosting the application in the Watson Content Hub CDN
+
+Copy the web resources, including the modified app.js (with username and password), to a folder named sample-article-angular/assets.
+If you had already placed them in such a folder in section #1 above, you may skip this step and continue with the next step, pushing the assets to WCH.
+
+Use the wchtools CLI to push the web resource assets to your tenant's authoring space.
+
+...
+wchtools push -A -v --dir <path-to-sample-article-angular>
+...
+
+where the specified path is the parent of the assets folder containing the web resources.
+
+Wait a few moments for the web resources to be auto-published.
+
+Access the application with the following URL, with your tenant id substituted for the placeholder:
+
+https://my.digitalexperience.ibm.com/<tenant-id>/index.html
 
 ### Resources
 
