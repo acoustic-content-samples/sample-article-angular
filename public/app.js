@@ -14,7 +14,10 @@ const module = angular.module('SampleArticleMagazine', ['ui.router'])
 
 
 // Setup the angular routes for displaying article cards based on which tab is clicked
-module.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+module.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', function ($httpProvider, $stateProvider, $urlRouterProvider) {
+
+	// all credentials to pass through on AJAX requests
+	$httpProvider.defaults.withCredentials = true;
 
 	// default view
 	$urlRouterProvider.otherwise('/home');
