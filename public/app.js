@@ -18,7 +18,7 @@ module.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', function
 
 	// all credentials to pass through on AJAX requests
 	$httpProvider.defaults.withCredentials = true;
-
+	
 	// default view
 	$urlRouterProvider.otherwise('/home');
 
@@ -57,10 +57,11 @@ module.factory('wchService', ['$http', function ($http) {
 	// Content Hub blueid username and password - replace these or add code to get these from inputs
 	const username = '[username]';
 	const password = '[password]';
-
-	// use this to get tenant from the basicauth call, filled in during login() below
-	let baseTenantUrl = '';
 	
+	// Base URL for APIs - replace {Host} and {Tenant ID} using the values available 
+	// from the "i" information icon at the top left of the WCH screen 
+	const baseTenantUrl = "https://{Host}/api/{Tenant ID}";
+
 	/**
 	* Logs into Watson Content hub
 	* @return {Promise}
@@ -71,7 +72,6 @@ module.factory('wchService', ['$http', function ($http) {
 				url: 'https://my.digitalexperience.ibm.com/api/login/v1/basicauth',
 				headers: { 'Authorization': 'Basic ' + btoa(username + ':' + password) }
 			}).then(response => {
-				baseTenantUrl = response.headers('x-ibm-dx-tenant-base-url');
 				return response.data;
 			});
 	}
