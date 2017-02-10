@@ -14,7 +14,7 @@ This sample shows:
 
 The initial set of APIs provided by Watson Content Hub are for authoring services, which require authentication and are not optimized for retrieval by applications in production. Follow-on releases will provide "delivery" services which can be accessed anonymously and are optimized for caching and performance. However, the two APIs will be very similar, so to switch from authoring to delivery services you will just need to change the "authoring" portion of the service URL to "delivery". 
 
-### About authentication and tenant handling
+### About authentication
 
 To call authenticated APIs, you need to first call the login service with the desired user name and password. This will return an authentication token cookie for use on subsequent calls. The browser will include the authentication token cookie in subsequent requests. 
 
@@ -33,7 +33,8 @@ Download the application files (html, js, and css) from the "public" folder into
 This sample uses a hard-coded user name and password set in the app.js file. Update the name and password values in that file. To avoid putting credentials in the source you could change the application to provide browser inputs for username and password.
 
 The baseTenantUrl variable in app.js must also be set for your tenant. In the IBM Watson Content Hub user interface, click the "i" information icon at the top left of the screen next to where it says IBM Watson Content Hub. The pop-up window shows your host and tenant ID. Use this information to update the value of baseTenantUrl. For example it might look something like this:
-  const baseTenantUrl = "https://my12.digitalexperience.ibm.com/api/12345678-9abc-def0-1234-56789abcdef0";
+
+const baseTenantUrl = "https://my12.digitalexperience.ibm.com/api/12345678-9abc-def0-1234-56789abcdef0";
 
 #### 3. Create all the resources needed to render the sample
 
