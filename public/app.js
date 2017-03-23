@@ -1,10 +1,10 @@
 /*
- * Copyright 2016 IBM Corp.
+ * Copyright IBM Corp. 2016, 2017
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0 
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
 */
 
@@ -18,7 +18,7 @@ module.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', function
 
 	// all credentials to pass through on AJAX requests
 	$httpProvider.defaults.withCredentials = true;
-	
+
 	// default view
 	$urlRouterProvider.otherwise('/home');
 
@@ -57,10 +57,11 @@ module.factory('wchService', ['$http', function ($http) {
 	// Content Hub blueid username and password - replace these or add code to get these from inputs
 	const username = '[username]';
 	const password = '[password]';
-	
-	// Base URL for APIs - replace {Host} and {Tenant ID} using the values available 
-	// from the "i" information icon at the top left of the WCH screen 
-	const baseTenantUrl = "https://{Host}/api/{Tenant ID}";
+
+    // The API URL, along with the host and content hub id for your tenant, may be
+    // found in the "Hub Information" dialog off the "User menu" in the authoring UI
+    // Update the following URL with the value from that Hub Information dialog.
+    const baseTenantAPIURL = "https://{Host}/api/{Tenant ID}";
 
 	/**
 	* Logs into Watson Content hub
@@ -69,21 +70,21 @@ module.factory('wchService', ['$http', function ($http) {
 	function login() {
 		return $http({
 				method: 'GET',
-				url: 'https://my.digitalexperience.ibm.com/api/login/v1/basicauth',
+				url: baseTenantAPIURL + '/login/v1/basicauth',
 				headers: { 'Authorization': 'Basic ' + btoa(username + ':' + password) }
 			}).then(response => {
 				return response.data;
 			});
 	}
-	
+
 	/**
 	* Get the base url which includes the tenant id
 	* @return {String}
 	*/
 	function getBaseURL() {
-		return baseTenantUrl;
+		return baseTenantAPIURL;
 	}
-	
+
 	/**
 	* Retrieves the ID for the taxonomy with a given name
 	* @param {String} taxonomyName: The string name of the taxonomy to fetch
@@ -92,7 +93,7 @@ module.factory('wchService', ['$http', function ($http) {
 	function getTaxonomyByName(taxonomyName) {
 		return $http({
 				method: 'GET',
-				url: baseTenantUrl + '/authoring/v1/categories',
+				url: baseTenantAPIURL + '/authoring/v1/categories',
 				withCredentials: true
 			}).then(response => {
 				return response.data.items.find(item => {
@@ -100,7 +101,7 @@ module.factory('wchService', ['$http', function ($http) {
 				});
 			});
 	}
-	
+
 	/**
 	* Retrieves the categories under a given taxonomy id
 	* @return {String} id: The string id of the taxonomy
@@ -109,13 +110,13 @@ module.factory('wchService', ['$http', function ($http) {
 	function getCategoriesByTaxonomyID(id) {
 		return $http({
 				method: 'GET',
-				url: baseTenantUrl + '/authoring/v1/categories/' + id + '/children',
+				url: baseTenantAPIURL + '/authoring/v1/categories/' + id + '/children',
 				withCredentials: true
 			}).then(response => {
 				return response.data.items;
 			});
 	}
-	
+
 	/**
 	* Retrieves the ID for the taxonomy with a given name
 	* @param {String} category: The string name of the taxonomy to fetch
@@ -124,7 +125,7 @@ module.factory('wchService', ['$http', function ($http) {
 	function getContentItemsByCategoryName(categoryName) {
 		return $http({
 				method: 'GET',
-				url: baseTenantUrl + '/authoring/v1/search?q=*:*&wt=json&fq=type%3A%22Article%22&fq=classification:(content)&fl=id,document&fq=categories:(Article/' + categoryName + ')&sort=lastModified%20desc',
+				url: baseTenantAPIURL + '/authoring/v1/search?q=*:*&wt=json&fq=type%3A%22Article%22&fq=classification:(content)&fl=id,document&fq=categories:(Article/' + categoryName + ')&sort=lastModified%20desc',
 				withCredentials: true
 			}).then(response => {
 				let contentItems = [];
@@ -137,8 +138,8 @@ module.factory('wchService', ['$http', function ($http) {
 					item.summary = item.summary ? item.summary.value : '';
 					item.author = item.author ? item.author.value : '';
 					item.body = item.body ? item.body.value : '';
-					item.imgSrc = item.image.asset ? baseTenantUrl + item.image.asset.resourceUri : '';
-					item.thumbnail = item.image.renditions && item.image.renditions.thumbnail ? baseTenantUrl + item.image.renditions.thumbnail.source : '';
+					item.imgSrc = item.image.asset ? baseTenantAPIURL + item.image.asset.resourceUri : '';
+					item.thumbnail = item.image.renditions && item.image.renditions.thumbnail ? baseTenantAPIURL + item.image.renditions.thumbnail.source : '';
 					let publishDate = item.publishDate ? new Date(item.publishDate.value) : new Date('');
 					item.publishDate = publishDate.toLocaleDateString();
 					// add the content item to the array
@@ -236,7 +237,7 @@ module.component('articleCards', {
 				this.status = 'done';
 
 			// print out any errors
-			}).catch(error => { 
+			}).catch(error => {
 				this.status = 'failed';
 				console.error('Error loading the content items in the %o category: %o', this.categoryName, error);
 			});
