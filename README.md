@@ -2,7 +2,6 @@
 This sample web application illustrates how to call IBM Watson Content Hub APIs from client JavaScript. The application uses Angular, jQuery and Bootstrap to display an online application with navigation and cards with images from Watson Content Hub.
 
 This sample shows:
-* Authenticating to the Watson Content Hub and calling APIs that require authentication.
 * Using the taxonomies and categories APIs to retrieve the site's navigation.
 * Using the powerful search API to retrieve a list of content items for a specific content type.
 * Accessing content item elements for use in rendering.
@@ -10,27 +9,13 @@ This sample shows:
 * Dynamically building HTML for navigation, cards and details using Angular, jQuery and Bootstrap.
 * Navigate between different list and details views using Angular routing
 
-### About the Watson Content Hub authoring APIs
-
-The initial set of APIs provided by Watson Content Hub are for authoring services, which require authentication and are not optimized for retrieval by applications in production. Follow-on releases will provide "delivery" services which can be accessed anonymously and are optimized for caching and performance. However, the two APIs will be very similar, so to switch from authoring to delivery services you will just need to change the "authoring" portion of the service URL to "delivery".
-
-### About authentication
-
-To call authenticated APIs, you need to first call the login service with the desired user name and password. This will return an authentication token cookie for use on subsequent calls. The browser will include the authentication token cookie in subsequent requests.
-
-Once you have the authentication token and have built the complete API link that includes the tenant ID, you can call any of the authenticated APIs by appending the specific API route for the service you want. This example calls the search service by appending "/authoring/v1/search" to the base URL, and the categories service via "/authoring/v1/categories".
-
-Note that every API service operation has specific user roles that it can be used with. In the API Explorer (see link below under [resources](#user-content-resources)) you can see the user roles for all operations.
-
 ### Running the sample
 
 #### 1. Download the files
 
 Download the application files (html, js, and css) from the "public" folder into any folder on your workstation.
 
-#### 2. Update the user credentials and baseTenantAPIURL
-
-This sample uses a hard-coded user name and password set in the app.js file. Update the name and password values in that file. To avoid putting credentials in the source you could change the application to provide browser inputs for username and password.
+#### 2. Update the baseTenantAPIURL
 
 The baseTenantAPIURL variable in public/app.js must also be set for your tenant. In the IBM Watson Content Hub user interface, open the user menu from the top navigation bar, then select "Hub information". The pop-up window shows your API URL, host and content hub ID for your Watson Content Hub tenant. Use this information to update the value of the baseTenantAPIURL variable in public/app.js, in the form https://{host}/api/{content hub tenant id}.  For example it might look something like this:
 
