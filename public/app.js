@@ -87,12 +87,12 @@ module.factory('wchService', ['$http', function ($http) {
 	*/
 	function getCategoriesByTaxonomyID(id) {
         // TODO get these from delivery search
-		return [
+		return Promise.resolve([
             {"name":"Fashion",   "id": "cdc34133c379246560113fa85e69b1aa"},
             {"name":"Lifestyle", "id": "911cf1415a408d9655659d01d34d04a1"},
             {"name":"Tech",      "id": "ea8ba30b49d21dc79d559b73fd77b8c1"},
             {"name":"Travel",    "id": "911cf1415a408d9655659d01d34cbd77"}
-        ];
+        ]);
 	}
 
 	/**
@@ -144,13 +144,8 @@ module.component('taxonomyNavigation', {
 		this.tabs = [];
 		this.status = 'loading';	// set the status, one of 'loading', 'failed', 'done'
 
-		// load the navigation, retrieve the Article taxonomy for this tenant
-        wchService.getTaxonomyByName('Article').then(taxonomy => {
-			return wchService.getCategoriesByTaxonomyID(taxonomy.id);
-
-		// retrieve the categories under the Article taxonomy to populate the navigation
-		// go to the first navigation item
-		}).then(categories => {
+		// load the navigation - TODO get taxonomy/categories from search
+		wchService.getCategoriesByTaxonomyID("59f05dd9116cf0ee47c23903bd563ea7").then(categories => {
 			this.tabs = categories;
 			this.status = 'done';
 			if(this.tabs.length) {
@@ -160,7 +155,7 @@ module.component('taxonomyNavigation', {
 		// print out any errors
 		}).catch(error => {
 			this.status = 'failed';
-			console.error('Error logging in and loading the navigation: %o', error);
+			console.error('Error loading the navigation: %o', error);
 			// an empty category indicates a failure to the 'articleCards' component
 			$state.transitionTo('cards', { category: '' });
 		});
