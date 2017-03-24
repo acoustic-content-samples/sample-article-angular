@@ -16,9 +16,6 @@ const module = angular.module('SampleArticleMagazine', ['ui.router'])
 // Setup the angular routes for displaying article cards based on which tab is clicked
 module.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', function ($httpProvider, $stateProvider, $urlRouterProvider) {
 
-	// all credentials to pass through on AJAX requests
-	$httpProvider.defaults.withCredentials = true;
-
 	// default view
 	$urlRouterProvider.otherwise('/home');
 
@@ -54,28 +51,10 @@ module.run(['$state', function ($state) {
 // Angular factory which accesses WCH
 module.factory('wchService', ['$http', function ($http) {
 
-	// Content Hub blueid username and password - replace these or add code to get these from inputs
-	const username = '[username]';
-	const password = '[password]';
-
     // The API URL, along with the host and content hub id for your tenant, may be
     // found in the "Hub Information" dialog off the "User menu" in the authoring UI
     // Update the following URL with the value from that Hub Information dialog.
     const baseTenantAPIURL = "https://{Host}/api/{Tenant ID}";
-
-	/**
-	* Logs into Watson Content hub
-	* @return {Promise}
-	*/
-	function login() {
-		return $http({
-				method: 'GET',
-				url: baseTenantAPIURL + '/login/v1/basicauth',
-				headers: { 'Authorization': 'Basic ' + btoa(username + ':' + password) }
-			}).then(response => {
-				return response.data;
-			});
-	}
 
 	/**
 	* Get the base url which includes the tenant id
@@ -93,28 +72,27 @@ module.factory('wchService', ['$http', function ($http) {
 	function getTaxonomyByName(taxonomyName) {
 		return $http({
 				method: 'GET',
-				url: baseTenantAPIURL + '/authoring/v1/categories',
-				withCredentials: true
+				url: baseTenantAPIURL + '/delivery/v1/search?q=*:*&fl=name,id,classification&fq=classification:(taxonomy)&fq=name:' + taxonomyName,
 			}).then(response => {
-				return response.data.items.find(item => {
-					return item.name === taxonomyName;
-				});
+                return response.data.documents.find(item => {
+                    return item.name === taxonomyName;
+                });
 			});
 	}
 
 	/**
 	* Retrieves the categories under a given taxonomy id
-	* @return {String} id: The string id of the taxonomy
+	* @param {String} id: The string id of the taxonomy
 	* @return {Promise} resolves to an Array of category Objects
 	*/
 	function getCategoriesByTaxonomyID(id) {
-		return $http({
-				method: 'GET',
-				url: baseTenantAPIURL + '/authoring/v1/categories/' + id + '/children',
-				withCredentials: true
-			}).then(response => {
-				return response.data.items;
-			});
+        // TODO get these from delivery search
+		return [
+            {"name":"Fashion",   "id": "cdc34133c379246560113fa85e69b1aa"},
+            {"name":"Lifestyle", "id": "911cf1415a408d9655659d01d34d04a1"},
+            {"name":"Tech",      "id": "ea8ba30b49d21dc79d559b73fd77b8c1"},
+            {"name":"Travel",    "id": "911cf1415a408d9655659d01d34cbd77"}
+        ];
 	}
 
 	/**
@@ -125,7 +103,7 @@ module.factory('wchService', ['$http', function ($http) {
 	function getContentItemsByCategoryName(categoryName) {
 		return $http({
 				method: 'GET',
-				url: baseTenantAPIURL + '/authoring/v1/search?q=*:*&wt=json&fq=type%3A%22Article%22&fq=classification:(content)&fl=id,document&fq=categories:(Article/' + categoryName + ')&sort=lastModified%20desc',
+				url: baseTenantAPIURL + '/delivery/v1/search?q=*:*&wt=json&fq=type%3A%22Article%22&fq=classification:(content)&fl=id,document&fq=categories:(Article/' + categoryName + ')&sort=lastModified%20desc',
 				withCredentials: true
 			}).then(response => {
 				let contentItems = [];
@@ -150,7 +128,6 @@ module.factory('wchService', ['$http', function ($http) {
 	}
 
 	return {
-		login,
 		getBaseURL,
 		getTaxonomyByName,
 		getCategoriesByTaxonomyID,
@@ -167,12 +144,8 @@ module.component('taxonomyNavigation', {
 		this.tabs = [];
 		this.status = 'loading';	// set the status, one of 'loading', 'failed', 'done'
 
-		// load the navigation, first log in to Watson Content Hub
-		wchService.login().then(() => {
-			return wchService.getTaxonomyByName('Article');
-
-		// retrieve the Article taxonomy for this tenant
-		}).then(taxonomy => {
+		// load the navigation, retrieve the Article taxonomy for this tenant
+        wchService.getTaxonomyByName('Article').then(taxonomy => {
 			return wchService.getCategoriesByTaxonomyID(taxonomy.id);
 
 		// retrieve the categories under the Article taxonomy to populate the navigation
