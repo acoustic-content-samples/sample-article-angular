@@ -88,10 +88,10 @@ module.factory('wchService', ['$http', function ($http) {
 	function getCategoriesByTaxonomyID(id) {
         // TODO get these from delivery search
 		return Promise.resolve([
-            {"name":"Fashion",   "id": "cdc34133c379246560113fa85e69b1aa"},
-            {"name":"Lifestyle", "id": "911cf1415a408d9655659d01d34d04a1"},
-            {"name":"Tech",      "id": "ea8ba30b49d21dc79d559b73fd77b8c1"},
-            {"name":"Travel",    "id": "911cf1415a408d9655659d01d34cbd77"}
+            {"name": "Fashion",   "id": "cdc34133c379246560113fa85e69b1aa"},
+            {"name": "Lifestyle", "id": "911cf1415a408d9655659d01d34d04a1"},
+            {"name": "Tech",      "id": "ea8ba30b49d21dc79d559b73fd77b8c1"},
+            {"name": "Travel",    "id": "911cf1415a408d9655659d01d34cbd77"}
         ]);
 	}
 
@@ -106,23 +106,25 @@ module.factory('wchService', ['$http', function ($http) {
 				url: baseTenantAPIURL + '/delivery/v1/search?q=*:*&wt=json&fq=type%3A%22Article%22&fq=classification:(content)&fl=id,document&fq=categories:(Article/' + categoryName + ')&sort=lastModified%20desc',
 				withCredentials: true
 			}).then(response => {
-				let contentItems = [];
-				response.data.documents.forEach(itemDoc => {
-					// the entire content item is available in the "document" field as a JSON string, so we'll parse it
-					let item = $.parseJSON(itemDoc.document).elements;console.log(item);
-					// normalize the values
-					item.id = itemDoc.id;
-					item.title = item.title ? item.title.value : 'untitled';
-					item.summary = item.summary ? item.summary.value : '';
-					item.author = item.author ? item.author.value : '';
-					item.body = item.body ? item.body.value : '';
-					item.imgSrc = item.image.asset ? baseTenantAPIURL + item.image.asset.resourceUri : '';
-					item.thumbnail = item.image.renditions && item.image.renditions.thumbnail ? baseTenantAPIURL + item.image.renditions.thumbnail.source : '';
-					let publishDate = item.publishDate ? new Date(item.publishDate.value) : new Date('');
-					item.publishDate = publishDate.toLocaleDateString();
-					// add the content item to the array
-					contentItems.push(item);
-				});
+				let contentItems = []; console.log(response.data);
+				if(response.data.numFound > 0) {
+					response.data.documents.forEach(itemDoc => {
+						// the entire content item is available in the "document" field as a JSON string, so we'll parse it
+						let item = $.parseJSON(itemDoc.document).elements;console.log(item);
+						// normalize the values
+						item.id = itemDoc.id;
+						item.title = item.title ? item.title.value : 'untitled';
+						item.summary = item.summary ? item.summary.value : '';
+						item.author = item.author ? item.author.value : '';
+						item.body = item.body ? item.body.value : '';
+						item.imgSrc = item.image.asset ? baseTenantAPIURL + item.image.asset.resourceUri : '';
+						item.thumbnail = item.image.renditions && item.image.renditions.thumbnail ? baseTenantAPIURL + item.image.renditions.thumbnail.source : '';
+						let publishDate = item.publishDate ? new Date(item.publishDate.value) : new Date('');
+						item.publishDate = publishDate.toLocaleDateString();
+						// add the content item to the array
+						contentItems.push(item);
+					});
+				}
 				return contentItems;
 			});
 	}
@@ -202,7 +204,7 @@ module.component('articleCards', {
 			// load the Articles
 			wchService.getContentItemsByCategoryName(this.categoryName).then(items => {
 				this.cards = items;
-				this.status = 'done';
+				this.status = items.length ? 'done' : 'none';
 
 			// print out any errors
 			}).catch(error => {
@@ -217,6 +219,7 @@ module.component('articleCards', {
 	template: `
 		<div ng-if="$ctrl.status === 'loading'" class="spinner"></div>
 		<div ng-if="$ctrl.status === 'failed'" class="alert" role="alert">Could not load {{$ctrl.categoryName}} articles</div>
+		<div ng-if="$ctrl.status === 'none'" class="alert" role="alert">No results for {{$ctrl.categoryName}}</div>
 		<div ng-if="$ctrl.status === 'done'" class="cards">
 			<a class="flex-card" ng-repeat="card in $ctrl.cards track by card.id" ui-sref="cards.details({ item: card, itemName: card.title })" href="#">
 				<span class="flex-card-header">
