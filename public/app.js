@@ -64,35 +64,19 @@ module.factory('wchService', ['$http', function ($http) {
 		return baseTenantAPIURL;
 	}
 
-	/**
-	* Retrieves the ID for the taxonomy with a given name
-	* @param {String} taxonomyName: The string name of the taxonomy to fetch
-	* @return {Promise} resolves to a taxonomy Object
-	*/
-	function getTaxonomyByName(taxonomyName) {
-		return $http({
-				method: 'GET',
-				url: baseTenantAPIURL + '/delivery/v1/search?q=*:*&fl=name,id,classification&fq=classification:(taxonomy)&fq=name:' + taxonomyName,
-			}).then(response => {
-                return response.data.documents.find(item => {
-                    return item.name === taxonomyName;
-                });
-			});
-	}
 
 	/**
-	* Retrieves the categories under a given taxonomy id
+	* Retrieves the categories under an Article or 'Sample Article' taxonomy
 	* @param {String} id: The string id of the taxonomy
 	* @return {Promise} resolves to an Array of category Objects
 	*/
-	function getCategoriesByTaxonomyID(id) {
-        // TODO get these from delivery search
-		return Promise.resolve([
-            {"name": "Fashion",   "id": "cdc34133c379246560113fa85e69b1aa"},
-            {"name": "Lifestyle", "id": "911cf1415a408d9655659d01d34d04a1"},
-            {"name": "Tech",      "id": "ea8ba30b49d21dc79d559b73fd77b8c1"},
-            {"name": "Travel",    "id": "911cf1415a408d9655659d01d34cbd77"}
-        ]);
+	function getArticleCategories() {
+        return $http({
+                method: 'GET',
+                url: baseTenantAPIURL + '/delivery/v1/search?q=*:*&fl=id,name&fq=classification:(category)&fq=path:(%5C/Article/* OR %5C/Sample%5C Article/*)'
+            }).then(response => {
+                return response.data.documents;
+            });
 	}
 
 	/**
@@ -103,14 +87,14 @@ module.factory('wchService', ['$http', function ($http) {
 	function getContentItemsByCategoryName(categoryName) {
 		return $http({
 				method: 'GET',
-				url: baseTenantAPIURL + '/delivery/v1/search?q=*:*&wt=json&fq=type%3A%22Article%22&fq=classification:(content)&fl=id,document&fq=categories:(Article/' + categoryName + ')&sort=lastModified%20desc',
+				url: baseTenantAPIURL + '/delivery/v1/search?q=*:*&wt=json&fq=type%3A(Article OR %22Sample Article%22)&fq=classification:(content)&fl=id,document&fq=categories:(Article/' + categoryName + ' OR Sample%5C Article/' + categoryName + ')&sort=lastModified%20desc',
 				withCredentials: true
 			}).then(response => {
-				let contentItems = []; console.log(response.data);
+				let contentItems = [];
 				if(response.data.numFound > 0) {
 					response.data.documents.forEach(itemDoc => {
 						// the entire content item is available in the "document" field as a JSON string, so we'll parse it
-						let item = $.parseJSON(itemDoc.document).elements;console.log(item);
+						let item = $.parseJSON(itemDoc.document).elements;
 						// normalize the values
 						item.id = itemDoc.id;
 						item.title = item.title ? item.title.value : 'untitled';
@@ -131,8 +115,7 @@ module.factory('wchService', ['$http', function ($http) {
 
 	return {
 		getBaseURL,
-		getTaxonomyByName,
-		getCategoriesByTaxonomyID,
+		getArticleCategories,
 		getContentItemsByCategoryName
 	};
 }]);
@@ -147,7 +130,7 @@ module.component('taxonomyNavigation', {
 		this.status = 'loading';	// set the status, one of 'loading', 'failed', 'done'
 
 		// load the navigation - TODO get taxonomy/categories from search
-		wchService.getCategoriesByTaxonomyID("59f05dd9116cf0ee47c23903bd563ea7").then(categories => {
+		wchService.getArticleCategories().then(categories => {
 			this.tabs = categories;
 			this.status = 'done';
 			if(this.tabs.length) {
