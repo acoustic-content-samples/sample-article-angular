@@ -17,7 +17,7 @@ Download the application files (html, js, and css) from the "public" folder into
 
 #### 2. Update the baseTenantAPIURL
 
-The baseTenantAPIURL variable in public/app.js must also be set for your tenant. In the IBM Watson Content Hub user interface, open the user menu from the top navigation bar, then select "Hub information". The pop-up window shows your API URL, host and content hub ID for your Watson Content Hub tenant. Use this information to update the value of the baseTenantAPIURL variable in public/app.js, in the form https://{host}/api/{content hub tenant id}.  For example it might look something like this:
+The baseTenantAPIURL variable in public/app.js must also be set for your tenant. In the IBM Watson Content Hub user interface, open the "Hub information" dialog from the "About" flyout menu off the left navigation pane. The pop-up window shows your API URL, host and content hub ID for your Watson Content Hub tenant. Use this information to update the value of the baseTenantAPIURL variable in public/app.js, in the form https://{host}/api/{content hub tenant id}.  For example it might look something like this:
 
 const baseTenantAPIURL = "https://my12.digitalexperience.ibm.com/api/12345678-9abc-def0-1234-56789abcdef0";
 
