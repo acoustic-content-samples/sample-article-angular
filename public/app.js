@@ -54,7 +54,7 @@ module.factory('wchService', ['$http', function ($http) {
     // The API URL, along with the host and content hub id for your tenant, may be
     // found in the "Hub Information" dialog off the "User menu" in the authoring UI
     // Update the following URL with the value from that Hub Information dialog.
-    const baseTenantAPIURL = "https://{Host}/api/{Tenant ID}";
+    const baseTenantAPIURL = "https://my7.digitalexperience.ibm.com/api/99086a1e-abe7-4750-8c7b-29b6af82c2f1";
 
 	/**
 	* Get the base url which includes the tenant id
@@ -87,7 +87,7 @@ module.factory('wchService', ['$http', function ($http) {
 	function getContentItemsByCategoryName(categoryName) {
 		return $http({
 				method: 'GET',
-				url: baseTenantAPIURL + '/delivery/v1/search?q=*:*&wt=json&fq=type%3A(Article OR %22Sample Article%22)&fq=classification:(content)&fl=id,document&fq=categories:(Article/' + categoryName + ' OR Sample%5C Article/' + categoryName + ')&sort=lastModified%20desc',
+				url: baseTenantAPIURL + '/delivery/v1/search?q=*:*&wt=json&fq=type%3A(Page contents)&fq=classification:(content)&fl=id,document&fq=categories:(Article/' + categoryName + ' OR Sample%5C Article/' + categoryName + ')&sort=lastModified%20desc',
 				withCredentials: true
 			}).then(response => {
 				let contentItems = [];

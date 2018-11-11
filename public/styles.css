@@ -1,12 +1,11 @@
 /* page */
-html {
+.html {
 	height: 100%;
-	background: black url("images/bg.jpg") no-repeat fixed center center;
-	background-size: cover;
 }
 
-body {
-	background-color: transparent;
+.body {
+	background: black url("images/bg.jpg") no-repeat fixed center center;
+	background-size: cover;
 	font-family: 'News Cycle', sans-serif;
 	font-size: 1.2em;
 	height: 100%;
@@ -14,7 +13,7 @@ body {
 	color: #141320;
 }
 
-* {
+.body * {
 	transition-property: 
 	background-color,
 	border-color,
@@ -36,7 +35,7 @@ body {
 }
 
 /* header */
-header {
+.header {
 	background-color: #363636;
 	display: flex;
 	align-items: center;
@@ -45,25 +44,25 @@ header {
 	flex-shrink: 0;
 }
 
-header a:hover,
-header a:focus,
-header a:active {
+.header a:hover,
+.header a:focus,
+.header a:active {
 	text-decoration: none !important;
 }
 
-header h4 {
+.header h4 {
 	color: #faf6ea;
 	margin: 0 0 0 40px;
 }
 
-header h4:hover,
-header h4:focus,
-header h4:active {
+.header h4:hover,
+.header h4:focus,
+.header h4:active {
 	color: #f5edd6;
 	text-shadow: 0 0 8px #faf6ea;
 }
 
-header a:focus {
+.header a:focus {
 	outline: none;
 }
 
@@ -129,6 +128,7 @@ taxonomy-navigation .nav-pills .nav-link.active:focus {
 /* Article cards */
 .main {
 	flex-grow: 2;
+	min-height: 700px;
 }
 
 .main div.alert {
@@ -390,6 +390,17 @@ taxonomy-navigation .nav-pills .nav-link.active:focus {
 
 .pulse > div:nth-child(6) {
 	animation: 0.75s cubic-bezier(0.2, 0.68, 0.18, 1.08) 0.36s normal none infinite running scale;
+}
+
+/* portal */
+.wpthemeLayoutContainers {
+	padding: 0;
+}
+.wpthemeInner,
+.wptheme1Col .wpthemeCol,
+.wpthemeControl {
+	width: 100%;
+	margin: 0;
 }
 
 @keyframes scale {
