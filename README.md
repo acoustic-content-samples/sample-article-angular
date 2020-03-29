@@ -1,5 +1,5 @@
 # sample-article-angular
-This sample web application illustrates how to call IBM Watson Content Hub APIs from client JavaScript. The application uses Angular, jQuery and Bootstrap to display an online application with navigation and cards with images from Watson Content Hub.
+This sample web application illustrates how to call Acoustic Content (formerly Watson Content Hub) APIs from client JavaScript. The application uses Angular, jQuery and Bootstrap to display an online application with navigation and cards with images from Acoustic Content.
 
 This sample shows:
 * Using the taxonomies and categories APIs to retrieve the site's navigation.
