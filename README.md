@@ -41,4 +41,10 @@ If all goes well you should see an application looking something like this (depe
 
 ![sample screenshot](/docs/article-sample-screenshot.jpg?raw=true "Sample screenshot")
 
-https://github.com/search?q=org%3Aacoustic-content-samples+developer.ibm.com+extension%3A.md&type=Code&ref=advsearch&l=&l=
+## Resources
+
+Acoustic Content developer documentation: https://developer.goacoustic.com/acoustic-content/docs
+
+Acoustic Content API reference documentation: https://developer.goacoustic.com/acoustic-content/reference
+
+Acoustic Content Samples Gallery: https://content-samples.goacoustic.com/
