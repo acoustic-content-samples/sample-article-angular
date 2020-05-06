@@ -41,10 +41,4 @@ If all goes well you should see an application looking something like this (depe
 
 ![sample screenshot](/docs/article-sample-screenshot.jpg?raw=true "Sample screenshot")
 
-### Resources
-
-API Explorer reference documentation: https://developer.ibm.com/api/view/id-618
-
-Watson Content Hub developer center: https://developer.ibm.com/wch/
-
-Watson Content Hub forum: https://developer.ibm.com/answers/smartspace/wch/
+https://github.com/search?q=org%3Aacoustic-content-samples+developer.ibm.com+extension%3A.md&type=Code&ref=advsearch&l=&l=
