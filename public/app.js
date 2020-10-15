@@ -54,7 +54,7 @@ module.factory('wchService', ['$http', function ($http) {
     // The API URL, along with the host and content hub id for your tenant, may be
     // found in the "Hub Information" dialog off the "User menu" in the authoring UI
     // Update the following URL with the value from that Hub Information dialog.
-    const baseTenantAPIURL = "https://my7.digitalexperience.ibm.com/api/99086a1e-abe7-4750-8c7b-29b6af82c2f1";
+    const baseTenantAPIURL = "https://content-us-7.content-cms.com/api/99086a1e-abe7-4750-8c7b-29b6af82c2f1";
 
 	/**
 	* Get the base url which includes the tenant id
